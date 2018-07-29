@@ -4,39 +4,42 @@ import com.virgingates.verticles.MainVerticle
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
 import io.vertx.ext.web.RoutingContext
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 private val LOGGER = LoggerFactory.getLogger(MainVerticle::class.java)
 
-val defaultDateTimeFormat = "yyyy-MM-dd HH:mm:ss"
+const val DEFAULT_TIME_FORMAT = "HH:mm:SS"
+const val DEFAULT_DATE_FORMAT = "yyyy-MM-dd"
+const val DEFAULT_DATE_TIME_FORMAT = "$DEFAULT_DATE_FORMAT $DEFAULT_TIME_FORMAT"
+
+fun parseDate(dateAsString: String, format: String): Date = SimpleDateFormat(format).parse(dateAsString)
+
+fun formatDate(date: Date, format: String): String = SimpleDateFormat(format).format(date)
 
 fun validateJson(routingContext: RoutingContext, jsonObject: JsonObject, vararg expectedKeys: String): Boolean {
-  if (!Arrays.stream(expectedKeys).allMatch { jsonObject.containsKey(it) }) {
-    LOGGER.error("Bad jsonObject creation JSON payload: " + jsonObject.encodePrettily() + " from " + routingContext.request().remoteAddress())
+    if (!Arrays.stream(expectedKeys).allMatch { jsonObject.containsKey(it) }) {
+        LOGGER.error("Bad jsonObject creation JSON payload: " + jsonObject.encodePrettily() + " from " + routingContext.request().remoteAddress())
 
-    val response = JsonObject();
+        val response = JsonObject();
 
-    response.put("success", false)
-    response.put("error", "Bad request payload")
+        response.put("success", false)
+        response.put("error", "Bad request payload")
 
-    routingContext.response().statusCode = 400
-    routingContext.response().putHeader("Content-Type", "application/json")
-    routingContext.response().end(response.encodePrettily())
+        routingContext.response().statusCode = 400
+        routingContext.response().putHeader("Content-Type", "application/json")
+        routingContext.response().end(response.encodePrettily())
 
-    return false
-  }
-  return true
+        return false
+    }
+    return true
 }
 
 fun createEmptySuccessResponse(routingContext: RoutingContext) {
-  val response = JsonObject().put("success", true)
+    val response = JsonObject().put("success", true)
 
-  routingContext.response().statusCode = 200
-  routingContext.response().putHeader("Content-Type", "application/json")
-  routingContext.response().end(response.encodePrettily())
+    routingContext.response().statusCode = 200
+    routingContext.response().putHeader("Content-Type", "application/json")
+    routingContext.response().end(response.encodePrettily())
 }
-
-fun parseDate(dateAsString: String, format: String) = LocalDateTime.parse(dateAsString, DateTimeFormatter.ofPattern(format, Locale.ENGLISH))
-
