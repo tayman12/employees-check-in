@@ -8,15 +8,11 @@ import io.vertx.ext.unit.junit.VertxUnitRunner
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.ext.web.codec.BodyCodec
-import io.vertx.kotlin.core.json.JsonObject
-import org.junit.AfterClass
-import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(VertxUnitRunner::class)
-class test {
+class APITest {
 
     val vertx: Vertx
     val webClient: WebClient
@@ -39,10 +35,10 @@ class test {
 
         val checkInFuture = Future.future<JsonObject>()
 
-        webClient
-                .post("/check-in")
+        webClient.post("/check-in")
                 .`as`(BodyCodec.jsonObject())
                 .sendJsonObject(checkInRequest) { response ->
+                    print("response received")
                     if (response.succeeded()) {
                         checkInFuture.complete(response.result().body())
                     } else {
