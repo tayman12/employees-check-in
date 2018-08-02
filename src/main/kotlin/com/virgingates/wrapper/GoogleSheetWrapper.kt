@@ -46,7 +46,6 @@ class GoogleSheetWrapper(private val userToSheetMapper: IUserToSheetMapper) : Sh
 
     override fun getCheckOutTime(checkOutDate: String) = getTime(checkOutDate, false)
 
-
     private fun getTime(checkInDate: String, isCheckIn: Boolean): String {
         val currentData = googleSheetInterface.readRange(spreadSheetId, "A1:D")
 

@@ -29,7 +29,7 @@ class UpdateCheckOutProcessorTest {
     }
 
     @Test
-    fun testHappyScenario() {
+    fun callWithValidInputs_ReturnOk() {
         context.body.put("id", "123")
         context.body.put("timestamp", timestamp)
 
