@@ -13,7 +13,6 @@ import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.Spreadsheet
 import com.google.api.services.sheets.v4.model.ValueRange
-import io.vertx.core.Future
 import io.vertx.core.logging.LoggerFactory
 import java.io.File
 import java.io.InputStreamReader
@@ -21,31 +20,30 @@ import java.util.*
 
 class GoogleSheetInterface {
 
-    private val LOGGER = LoggerFactory.getLogger(GoogleSheetInterface::class.java)
+    private val logger = LoggerFactory.getLogger(GoogleSheetInterface::class.java)
 
-    private val TOKENS_DIRECTORY_PATH = "tokens"
-    private val SCOPES = listOf(SheetsScopes.SPREADSHEETS)
-    private val CREDENTIALS_FILE_PATH = "credentials.json"
-    private val JSON_FACTORY = JacksonFactory.getDefaultInstance()
-    private val APPLICATION_NAME = "Google Sheets API Java Quickstart"
+    private val tokensPath = "tokens"
+    private val scopes = listOf(SheetsScopes.SPREADSHEETS)
+    private val credentialsFilePath = "credentials.json"
+    private val jsonFactory = JacksonFactory.getDefaultInstance()
+    private val applicationName = "Google Sheets API Java Quickstart"
 
     fun readRange(spreadsheetId: String, range: String): List<List<Any>> {
         return try {
-            LOGGER.info("Reading range $range from sheet $spreadsheetId")
+            logger.info("Reading range $range from sheet $spreadsheetId")
             buildSheets()
                     .spreadsheets()
                     .values()
                     .get(spreadsheetId, range)
                     .execute()
                     .getValues()
-
         } catch (e: IllegalStateException) {
             Arrays.asList()
         }
     }
 
     fun writeRange(spreadsheetId: String, startCell: String, values: List<List<Any>>) {
-        LOGGER.info("Writing ${values.size} row starting from cell $startCell into sheet $spreadsheetId")
+        logger.info("Writing ${values.size} row starting from cell $startCell into sheet $spreadsheetId")
         val body = ValueRange().setValues(values)
 
         buildSheets()
@@ -58,25 +56,25 @@ class GoogleSheetInterface {
 
     fun createSheet(): String {
         val spreadsheetId = buildSheets().spreadsheets().create(Spreadsheet()).execute().spreadsheetId
-        LOGGER.info("Sheet with id $spreadsheetId has been created successfully")
+        logger.info("Sheet with id $spreadsheetId has been created successfully")
         return spreadsheetId
     }
 
     private fun buildSheets(): Sheets {
         val httpTransport = GoogleNetHttpTransport.newTrustedTransport()
 
-        return Sheets.Builder(httpTransport, JSON_FACTORY, getCredentials(httpTransport))
-                .setApplicationName(APPLICATION_NAME)
+        return Sheets.Builder(httpTransport, jsonFactory, getCredentials(httpTransport))
+                .setApplicationName(applicationName)
                 .build()
     }
 
     private fun getCredentials(HTTP_TRANSPORT: NetHttpTransport): Credential {
-        val inputStream = GoogleSheetInterface::class.java.classLoader.getResourceAsStream(CREDENTIALS_FILE_PATH)
-        val clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, InputStreamReader(inputStream))
-        val token = File(TOKENS_DIRECTORY_PATH)
+        val inputStream = GoogleSheetInterface::class.java.classLoader.getResourceAsStream(credentialsFilePath)
+        val clientSecrets = GoogleClientSecrets.load(jsonFactory, InputStreamReader(inputStream))
+        val token = File(tokensPath)
 
         val flow = GoogleAuthorizationCodeFlow
-                .Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+                .Builder(HTTP_TRANSPORT, jsonFactory, clientSecrets, scopes)
                 .setDataStoreFactory(FileDataStoreFactory(token))
                 .setAccessType("offline")
                 .build()

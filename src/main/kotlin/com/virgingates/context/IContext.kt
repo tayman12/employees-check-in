@@ -1,6 +1,5 @@
 package com.virgingates.context
 
-import io.vertx.codegen.annotations.Nullable
 import io.vertx.core.json.JsonObject
 
 interface IContext {

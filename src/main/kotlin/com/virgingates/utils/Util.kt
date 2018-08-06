@@ -10,4 +10,3 @@ const val DEFAULT_DATE_TIME_FORMAT = "$DEFAULT_DATE_FORMAT $DEFAULT_TIME_FORMAT"
 fun parseDate(dateAsString: String, format: String): Date = SimpleDateFormat(format).parse(dateAsString)
 
 fun formatDate(date: Date, format: String): String = SimpleDateFormat(format).format(date)
-

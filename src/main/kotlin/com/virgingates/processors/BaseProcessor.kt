@@ -3,6 +3,7 @@ package com.virgingates.processors
 import com.virgingates.context.IContext
 import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.Logger
+import org.apache.http.HttpStatus
 import java.util.*
 
 open abstract class BaseProcessor(val routingContext: IContext) {
@@ -14,13 +15,11 @@ open abstract class BaseProcessor(val routingContext: IContext) {
             validate()
             process()
         } catch (e: IllegalStateException) {
-            invalidResponse(400, "Invalid request")
-        } catch (e: Exception) {
-            invalidResponse(500, "Internal server error")
+            invalidResponse(HttpStatus.SC_BAD_REQUEST, "Invalid request")
         }
     }
 
-    //TODO: figure out sub class name here
+    // figure out sub class name here
     abstract fun logger(): Logger
 
     abstract fun validate()
@@ -40,13 +39,13 @@ open abstract class BaseProcessor(val routingContext: IContext) {
     fun createEmptySuccessResponse() {
         val response = JsonObject().put("success", true)
 
-        routingContext.setStatusCode(200)
+        routingContext.setStatusCode(HttpStatus.SC_OK)
         routingContext.putHeader("Content-Type", "application/json")
         routingContext.setResponseBody(response)
     }
 
     private fun invalidResponse(statusCode: Int, message: String) {
-        val response = JsonObject();
+        val response = JsonObject()
 
         response.put("success", false)
         response.put("error", message)

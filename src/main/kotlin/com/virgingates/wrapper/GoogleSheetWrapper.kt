@@ -1,8 +1,13 @@
 package com.virgingates.wrapper
 
 import com.virgingates.mapper.IUserToSheetMapper
-import com.virgingates.utils.*
-import java.util.*
+import com.virgingates.utils.DEFAULT_DATE_FORMAT
+import com.virgingates.utils.DEFAULT_TIME_FORMAT
+import com.virgingates.utils.GoogleSheetInterface
+import com.virgingates.utils.formatDate
+import com.virgingates.utils.parseDate
+import java.util.Date
+import java.util.Arrays
 
 class GoogleSheetWrapper(private val userToSheetMapper: IUserToSheetMapper) : SheetWrapper {
 
@@ -57,10 +62,11 @@ class GoogleSheetWrapper(private val userToSheetMapper: IUserToSheetMapper) : Sh
     private fun getDateRecordIndex(data: List<List<Any>>, timestamp: Date): Int {
         val dateAsString = formatDate(timestamp, DEFAULT_DATE_FORMAT)
 
-        if (!data.isEmpty())
+        if (!data.isEmpty()) {
             for (i in data.size downTo 1)
                 if (dateAsString == data[i - 1][0])
                     return i
+        }
 
         return data.size + 1
     }

@@ -1,8 +1,8 @@
 package com.virgingates.verticles
 
+import com.virgingates.context.Context
 import com.virgingates.mapper.UserToSheetMapper
 import com.virgingates.processors.UpdateCheckInProcessor
-import com.virgingates.context.Context
 import com.virgingates.processors.UpdateCheckOutProcessor
 import com.virgingates.wrapper.GoogleSheetWrapper
 import io.vertx.core.AbstractVerticle
@@ -11,11 +11,12 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 
+const val HTTP_PORT = 8080
+
 class MainVerticle : AbstractVerticle() {
 
     private val userToSheetMapper = UserToSheetMapper()
 
-    //TODO: try and fail future
     override fun start(startFuture: Future<Void>) {
         val router = Router.router(vertx)
 
@@ -25,13 +26,11 @@ class MainVerticle : AbstractVerticle() {
 
         val httpServer = vertx.createHttpServer()
 
-        httpServer.requestHandler(router::accept).listen(8080)
+        httpServer.requestHandler(router::accept).listen(HTTP_PORT)
 
         startFuture.succeeded()
     }
 
-    //TODO: throw and handle exceptions
-    //TODO: Async operations in processing using rxjava
     private fun checkIn(routingContext: RoutingContext) {
         UpdateCheckInProcessor(Context(routingContext), GoogleSheetWrapper(userToSheetMapper)).execute()
     }

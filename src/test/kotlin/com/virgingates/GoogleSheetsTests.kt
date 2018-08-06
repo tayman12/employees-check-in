@@ -5,11 +5,10 @@ import com.virgingates.utils.DEFAULT_DATE_FORMAT
 import com.virgingates.utils.formatDate
 import com.virgingates.wrapper.GoogleSheetWrapper
 import com.virgingates.wrapper.SheetWrapper
-import org.junit.After
+import java.util.Calendar
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import java.util.Calendar
 
 // Integration test
 class GoogleSheetsTests {

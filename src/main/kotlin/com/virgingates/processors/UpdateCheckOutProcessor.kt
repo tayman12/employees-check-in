@@ -1,14 +1,13 @@
 package com.virgingates.processors
 
 import com.virgingates.context.IContext
-import com.virgingates.mapper.IUserToSheetMapper
 import com.virgingates.utils.DEFAULT_DATE_TIME_FORMAT
 import com.virgingates.utils.parseDate
-import com.virgingates.wrapper.GoogleSheetWrapper
 import com.virgingates.wrapper.SheetWrapper
 import io.vertx.core.logging.LoggerFactory
 
-class UpdateCheckOutProcessor(private val context: IContext, private val googleSheetWrapper: SheetWrapper) : BaseProcessor(context) {
+class UpdateCheckOutProcessor(private val context: IContext, private val googleSheetWrapper: SheetWrapper)
+    : BaseProcessor(context) {
 
     override fun logger() = LoggerFactory.getLogger(UpdateCheckOutProcessor::class.java)
 
