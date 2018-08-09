@@ -15,14 +15,12 @@ class UserToSheetMapper : IUserToSheetMapper {
         logger.info("Initializing user to sheet mapper succeeded")
     }
 
-    override fun getSpreadSheetId(userId: String): String? {
-        return if (userIdToSheetId.containsKey(userId)) {
-            val spreadSheetId = userIdToSheetId.getValue(userId) as String
-            logger.info("User $userId has been mapped to sheet $spreadSheetId")
-            spreadSheetId
-        } else {
-            logger.info("User $userId could not be mapped to any sheet")
-            null
-        }
+    override fun getSpreadSheetId(userId: String): String? = if (userIdToSheetId.containsKey(userId)) {
+        val spreadSheetId = userIdToSheetId.getValue(userId) as String
+        logger.info("User $userId has been mapped to sheet $spreadSheetId")
+        spreadSheetId
+    } else {
+        logger.info("User $userId could not be mapped to any sheet")
+        null
     }
 }

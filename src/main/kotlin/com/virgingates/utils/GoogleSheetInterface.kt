@@ -28,18 +28,16 @@ class GoogleSheetInterface {
     private val jsonFactory = JacksonFactory.getDefaultInstance()
     private val applicationName = "Google Sheets API Java Quickstart"
 
-    fun readRange(spreadsheetId: String, range: String): List<List<Any>> {
-        return try {
-            logger.info("Reading range $range from sheet $spreadsheetId")
-            buildSheets()
-                    .spreadsheets()
-                    .values()
-                    .get(spreadsheetId, range)
-                    .execute()
-                    .getValues()
-        } catch (e: IllegalStateException) {
-            Arrays.asList()
-        }
+    fun readRange(spreadsheetId: String, range: String): List<List<Any>> = try {
+        logger.info("Reading range $range from sheet $spreadsheetId")
+        buildSheets()
+                .spreadsheets()
+                .values()
+                .get(spreadsheetId, range)
+                .execute()
+                .getValues()
+    } catch (e: IllegalStateException) {
+        Arrays.asList()
     }
 
     fun writeRange(spreadsheetId: String, startCell: String, values: List<List<Any>>) {

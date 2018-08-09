@@ -16,7 +16,10 @@ open abstract class BaseProcessor(val routingContext: IContext) {
             process()
         } catch (e: IllegalStateException) {
             invalidResponse(HttpStatus.SC_BAD_REQUEST, "Invalid request")
+        }  catch (e: Exception) {
+            invalidResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal server error")
         }
+
     }
 
     // figure out sub class name here

@@ -63,9 +63,11 @@ class GoogleSheetWrapper(private val userToSheetMapper: IUserToSheetMapper) : Sh
         val dateAsString = formatDate(timestamp, DEFAULT_DATE_FORMAT)
 
         if (!data.isEmpty()) {
-            for (i in data.size downTo 1)
-                if (dateAsString == data[i - 1][0])
+            for (i in data.size downTo 1) {
+                if (dateAsString == data[i - 1][0]) {
                     return i
+                }
+            }
         }
 
         return data.size + 1
