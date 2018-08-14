@@ -4,29 +4,29 @@ failFast: true
 test-pattern: # Configure exclusions for test sources
   active: true
   patterns: # Test file regexes
-  - '.*/test/.*'
-  - '.*Test.kt'
-  - '.*Spec.kt'
+    - '.*/test/.*'
+    - '.*Test.kt'
+    - '.*Spec.kt'
   exclude-rule-sets:
-  - 'comments'
+    - 'comments'
   exclude-rules:
-  - 'NamingRules'
-  - 'WildcardImport'
-  - 'MagicNumber'
-  - 'MaxLineLength'
-  - 'LateinitUsage'
-  - 'StringLiteralDuplication'
-  - 'SpreadOperator'
-  - 'TooManyFunctions'
-  - 'ForEachOnRange'
+    - 'NamingRules'
+    - 'WildcardImport'
+    - 'MagicNumber'
+    - 'MaxLineLength'
+    - 'LateinitUsage'
+    - 'StringLiteralDuplication'
+    - 'SpreadOperator'
+    - 'TooManyFunctions'
+    - 'ForEachOnRange'
 
 build:
   maxIssues: 10
   weights:
-  # complexity: 2
-  # LongParameterList: 1
-  # style: 1
-  # comments: 1
+    # complexity: 2
+    # LongParameterList: 1
+    # style: 1
+    # comments: 1
 
 processors:
   active: true
@@ -180,21 +180,21 @@ exceptions:
   TooGenericExceptionCaught:
     active: true
     exceptionNames:
-    - ArrayIndexOutOfBoundsException
-    - Error
-    - Exception
-    - IllegalMonitorStateException
-    - NullPointerException
-    - IndexOutOfBoundsException
-    - RuntimeException
-    - Throwable
+     - ArrayIndexOutOfBoundsException
+     - Error
+     - Exception
+     - IllegalMonitorStateException
+     - NullPointerException
+     - IndexOutOfBoundsException
+     - RuntimeException
+     - Throwable
   TooGenericExceptionThrown:
     active: true
     exceptionNames:
-    - Error
-    - Exception
-    - Throwable
-    - RuntimeException
+     - Error
+     - Exception
+     - Throwable
+     - RuntimeException
 
 formatting:
   active: true
@@ -480,5 +480,4 @@ style:
     active: true
   WildcardImport:
     active: true
-#    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
-#    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'
+    excludeImports: 'java.util.*,kotlinx.android.synthetic.*'

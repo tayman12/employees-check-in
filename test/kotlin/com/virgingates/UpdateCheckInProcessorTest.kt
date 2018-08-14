@@ -33,12 +33,7 @@ class UpdateCheckInProcessorTest {
         context.body.put("id", "123")
         context.body.put("timestamp", timestamp)
 
-        updateCheckInProcessor.execute()
-
-        Mockito.verify(sheetMapper).setUserId("123")
-        Mockito.verify(sheetMapper).updateCheckInTime(parseDate(timestamp, DEFAULT_DATE_TIME_FORMAT), false)
-
-        Assert.assertEquals(200, context.getStatusCode())
+        callEndpoint(false)
     }
 
     @Test
@@ -47,10 +42,14 @@ class UpdateCheckInProcessorTest {
         context.body.put("forceUpdate", false)
         context.body.put("timestamp", timestamp)
 
+        callEndpoint(false)
+    }
+
+    private fun callEndpoint(forceUpdate: Boolean) {
         updateCheckInProcessor.execute()
 
         Mockito.verify(sheetMapper).setUserId("123")
-        Mockito.verify(sheetMapper).updateCheckInTime(parseDate(timestamp, DEFAULT_DATE_TIME_FORMAT), false)
+        Mockito.verify(sheetMapper).updateCheckInTime(parseDate(timestamp, DEFAULT_DATE_TIME_FORMAT), forceUpdate)
 
         Assert.assertEquals(200, context.getStatusCode())
     }
@@ -61,12 +60,7 @@ class UpdateCheckInProcessorTest {
         context.body.put("forceUpdate", true)
         context.body.put("timestamp", timestamp)
 
-        updateCheckInProcessor.execute()
-
-        Mockito.verify(sheetMapper).setUserId("123")
-        Mockito.verify(sheetMapper).updateCheckInTime(parseDate(timestamp, DEFAULT_DATE_TIME_FORMAT), true)
-
-        Assert.assertEquals(200, context.getStatusCode())
+        callEndpoint(true)
     }
 
     @Test

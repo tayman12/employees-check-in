@@ -21,6 +21,7 @@ class MainVerticle : AbstractVerticle() {
         val router = Router.router(vertx)
 
         router.post().handler(BodyHandler.create())
+        router.post("/").handler(this::healthCheck)
         router.post("/check-in").handler(this::checkIn)
         router.post("/check-out").handler(this::checkOut)
 
@@ -31,7 +32,11 @@ class MainVerticle : AbstractVerticle() {
         startFuture.succeeded()
     }
 
-    private fun checkIn(routingContext: RoutingContext) {
+    private fun healthCheck(routingContext: RoutingContext) {
+        HealthCheckProcessor(Context(routingContext), GoogleSheetWrapper(userToSheetMapper)).execute()
+    }
+
+   private fun checkIn(routingContext: RoutingContext) {
         UpdateCheckInProcessor(Context(routingContext), GoogleSheetWrapper(userToSheetMapper)).execute()
     }
 
