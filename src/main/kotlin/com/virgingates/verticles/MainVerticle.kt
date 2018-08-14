@@ -4,6 +4,7 @@ import com.virgingates.context.Context
 import com.virgingates.mapper.UserToSheetMapper
 import com.virgingates.processors.UpdateCheckInProcessor
 import com.virgingates.processors.UpdateCheckOutProcessor
+import com.virgingates.processors.HealthCheckProcessor
 import com.virgingates.wrapper.GoogleSheetWrapper
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
